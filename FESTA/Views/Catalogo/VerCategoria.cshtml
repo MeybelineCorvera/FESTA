@@ -1,0 +1,102 @@
+﻿@model FESTA.Models.Categoria
+@{
+    ViewData["Title"] = Model.Nombre;
+}
+
+<div class="container my-5">
+    <div class="row align-items-center mb-5">
+        <!-- Banner principal a la izquierda -->
+        <div class="col-lg-5 col-md-12 mb-4">
+            <div class="position-relative rounded-4 overflow-hidden shadow">
+                <img src="@Model.ImagenUrl" alt="@Model.Nombre"
+                     class="img-fluid w-100"
+                     style="height:400px; object-fit:cover; filter:brightness(70%)" />
+                <div class="position-absolute bottom-0 start-0 w-100 text-white p-3"
+                     style="background:rgba(0,0,0,0.5)">
+                    <h2 class="fw-bold">@Model.Nombre</h2>
+                    <p class="small">@Model.Descripcion</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subcategorías o productos a la derecha -->
+        <div class="col-lg-7 col-md-12">
+            @if (Model.Subcategorias != null && Model.Subcategorias.Any())
+            {
+                <h4 class="fw-bold text-rosa mb-3">Subcategorías</h4>
+                <div class="row g-4">
+                    @foreach (var sub in Model.Subcategorias)
+                    {
+                        <div class="col-sm-6 col-md-6">
+                            <div class="card shadow-sm border-0 rounded-4 h-100 hover-zoom">
+                                <a asp-action="VerCategoria" asp-route-id="@sub.Id" class="text-decoration-none text-dark">
+                                    <img src="@sub.ImagenUrl" class="card-img-top rounded-top-4"
+                                         style="height:180px; object-fit:cover;" alt="@sub.Nombre" />
+                                    <div class="card-body text-center">
+                                        <h6 class="fw-bold">@sub.Nombre</h6>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else if (Model.Productos != null && Model.Productos.Any())
+            {
+                <h4 class="fw-bold text-rosa mb-3">Productos</h4>
+                <div class="row g-4">
+                    @foreach (var producto in Model.Productos)
+                    {
+                        <div class="col-sm-6 col-md-6">
+                            <div class="card shadow-sm border-0 rounded-4 h-100 hover-zoom">
+                                <img src="@producto.ImagenUrl" class="card-img-top rounded-top-4"
+                                     style="height:180px; object-fit:cover;" alt="@producto.Nombre" />
+                                <div class="card-body text-center">
+                                    <h6 class="fw-bold">@producto.Nombre</h6>
+                                    <p class="text-muted mb-1">$@producto.Precio</p>
+                                    <form asp-controller="Carrito" asp-action="Agregar" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@producto.Id" />
+                                        <button type="submit" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-cart-plus"></i> Agregar
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No hay productos ni subcategorías disponibles.</p>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .text-rosa {
+            color: #e94b9a !important;
+        }
+
+        .btn-primary {
+            background-color: #e94b9a;
+            border-color: #e94b9a;
+        }
+
+            .btn-primary:hover {
+                background-color: #d83f8a;
+                border-color: #d83f8a;
+            }
+
+        .hover-zoom img {
+            transition: transform 0.4s ease;
+        }
+
+        .hover-zoom:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+}

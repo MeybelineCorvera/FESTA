@@ -1,0 +1,89 @@
+﻿@model FESTA.Models.Reserva
+@{
+    ViewData["Title"] = "Reserva";
+}
+
+<div class="container my-5 animate-on-scroll">
+    <h2 class="text-center fw-bold text-rosa mb-4">📅 Reserva tu evento</h2>
+
+    <div class="alert alert-light border-rosa shadow-sm mb-4 text-center">
+        <p class="mb-1">✨ <strong>Decoraciones:</strong> reserva al menos <strong>1 día</strong> antes.</p>
+        <p>🪑 <strong>Mobiliario:</strong> reserva con mínimo <strong>7 días</strong> de anticipación.</p>
+    </div>
+
+    <form id="formReserva" asp-action="Index" method="post"
+          class="p-4 bg-white rounded-4 shadow-sm border-rosa">
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Nombre completo</label>
+            <input name="NombreCliente" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Tipo de servicio</label>
+            <select id="tipoServicio" name="TipoServicio" class="form-select" required>
+                <option value="">-- Seleccione una opción --</option>
+                <option value="Decoración">Decoración</option>
+                <option value="Mobiliario">Mobiliario</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Fecha del evento</label>
+            <input id="fechaEvento" type="date" name="FechaEvento" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Hora</label>
+            <input type="time" name="Hora" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Dirección</label>
+            <textarea name="Direccion" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">WhatsApp</label>
+            <input type="tel" name="WhatsApp" class="form-control" placeholder="+503 7988-8479" required />
+        </div>
+
+        <div id="mensajeError" class="alert alert-danger d-none text-center"></div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary px-5 py-2 fw-bold mt-3">
+                <i class="bi bi-send"></i> Enviar reserva
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const form = document.getElementById("formReserva");
+        const tipoServicio = document.getElementById("tipoServicio");
+        const fechaEvento = document.getElementById("fechaEvento");
+        const mensajeError = document.getElementById("mensajeError");
+
+        form.addEventListener("submit", function (e) {
+            mensajeError.classList.add("d-none");
+            const tipo = tipoServicio.value;
+            const fecha = new Date(fechaEvento.value);
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+
+            const diferencia = (fecha - hoy) / (1000 * 60 * 60 * 24);
+
+            if (tipo === "Mobiliario" && diferencia < 7) {
+                e.preventDefault();
+                mensajeError.textContent = "❌ Las reservas de mobiliario deben hacerse con al menos 7 días de anticipación.";
+                mensajeError.classList.remove("d-none");
+            } else if (tipo === "Decoración" && diferencia < 1) {
+                e.preventDefault();
+                mensajeError.textContent = "❌ Las reservas de decoración deben hacerse con al menos 1 día de anticipación.";
+                mensajeError.classList.remove("d-none");
+            }
+        });
+    </script>
+}

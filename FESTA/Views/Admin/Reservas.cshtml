@@ -1,0 +1,125 @@
+﻿@model IEnumerable<FESTA.Models.Reserva>
+@{
+    ViewData["Title"] = "Reservas Realizadas";
+}
+
+<h2 class="text-center text-primary fw-bold my-4">📅 Reservas Realizadas</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success text-center fw-semibold">@TempData["Mensaje"]</div>
+}
+
+<table class="table table-hover shadow-sm align-middle">
+    <thead class="table-rosa text-white">
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>WhatsApp</th>
+            <th>Tipo</th>
+            <th>Fecha evento</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Detalles</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Id</td>
+                <td>@r.NombreCliente</td>
+                <td>@r.WhatsApp</td>
+                <td>@r.TipoServicio</td>
+                <td>@r.FechaEvento.ToString("dd/MM/yyyy")</td>
+                <td>$@r.Total</td>
+                <td>
+                    <form asp-action="CambiarEstado" method="post" class="d-flex gap-2">
+                        <input type="hidden" name="id" value="@r.Id" />
+                        <select name="nuevoEstado" class="form-select form-select-sm w-auto">
+                            <option value="Pendiente" selected="@("Pendiente" == r.Estado)">Pendiente</option>
+                            <option value="Pagado" selected="@("Pagado" == r.Estado)">Pagado</option>
+                            <option value="Cancelado" selected="@("Cancelado" == r.Estado)">Cancelado</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
+                    </form>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-secondary" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#det-@r.Id">
+                        Ver
+                    </button>
+                </td>
+            </tr>
+
+            <!-- Detalles desplegables -->
+            <!-- 🔽 DETALLES DE RESERVA -->
+            <tr class="collapse" id="det-@r.Id">
+                <td colspan="8">
+                    <div class="p-3 border rounded-3 bg-light">
+                        <h5 class="fw-bold text-primary mb-3">🛍️ Productos reservados</h5>
+
+                        @if (r.Detalles != null && r.Detalles.Any())
+                        {
+                            <ul class="list-group mb-3">
+                                @foreach (var d in r.Detalles)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>@d.Producto.Nombre (x@d.Cantidad)</span>
+                                        <strong>$@d.Subtotal</strong>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No hay productos registrados en esta reserva.</p>
+                        }
+
+                        <!-- 💳 Información del pago -->
+                        <h5 class="fw-bold text-success mt-4 mb-2">💳 Información de Pago</h5>
+                        @{
+                            var pago = r.Pagos?.OrderByDescending(p => p.FechaPago).FirstOrDefault();
+                        }
+                        @if (pago != null)
+                        {
+                            <p><strong>Porcentaje pagado:</strong> @pago.PorcentajePago % (@(pago.PorcentajePago == 100 ? "Pago completo" : "Anticipo"))</p>
+                            <p><strong>Monto pagado:</strong> $@pago.MontoPagado</p>
+                            <p><strong>Método:</strong> @pago.MetodoPago</p>
+                            <p><strong>Fecha:</strong> @pago.FechaPago.ToString("dd/MM/yyyy")</p>
+
+                            @if (!string.IsNullOrEmpty(pago.ComprobanteUrl))
+                            {
+                                <a href="@pago.ComprobanteUrl" target="_blank" class="btn btn-sm btn-outline-primary mt-2">
+                                    <i class="bi bi-file-earmark-text"></i> Ver comprobante
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-danger">❌ Aún no se ha registrado ningún pago para esta reserva.</p>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Styles {
+    <style>
+        .table-rosa {
+            background-color: #e94b9a;
+        }
+
+        .btn-primary {
+            background-color: #e94b9a;
+            border-color: #e94b9a;
+        }
+
+            .btn-primary:hover {
+                background-color: #d83f8a;
+                border-color: #d83f8a;
+            }
+    </style>
+}

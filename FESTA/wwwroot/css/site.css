@@ -1,0 +1,417 @@
+
+.banner {
+    color: #fff;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+footer {
+    font-size: 0.9rem;
+}
+
+/* BOTÓN FLOTANTE DE WHATSAPP */
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: #25D366;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+}
+
+    .whatsapp-float img {
+        width: 55px;
+        height: 55px;
+    }
+
+    .whatsapp-float:hover {
+        transform: scale(1.1);
+    }
+/* Ajustes responsive adicionales */
+@media (max-width: 768px) {
+    .banner {
+        height: 250px;
+        font-size: 0.9rem;
+    }
+
+    .navbar-brand img {
+        height: 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    .card img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    footer {
+        font-size: 0.85rem;
+    }
+}
+@media (max-width: 768px) {
+    .nav-item .text-muted {
+        display: none;
+    }
+}
+.card {
+    border-radius: 15px;
+    transition: transform 0.2s ease-in-out;
+}
+
+    .card:hover {
+        transform: scale(1.03);
+    }
+.hero-banner {
+    height: 90vh;
+    overflow: hidden;
+}
+
+.banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(40%);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+}
+
+.banner-content {
+    z-index: 2;
+}
+
+    .banner-content h1 {
+        color: #fff;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    }
+
+    .banner-content p {
+        color: #f8f9fa;
+    }
+
+    .banner-content a {
+        border-radius: 50px;
+        padding: 10px 25px;
+    }
+
+
+:root {
+    --rosa-claro: #F9B4D0;
+    --rosa-fuerte: #E25A8C;
+    --dorado: #F5D48E;
+    --gris-suave: #F4F4F4;
+    --gris-oscuro: #2C2C2C;
+    --blanco: #ffffff;
+}
+
+/* --- ESTILO GLOBAL --- */
+body {
+    background-color: var(--festa-gris);
+    font-family: 'Bookman Old Style', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- NAVBAR --- */
+
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--rosa-fuerte) !important;
+}
+
+.nav-link {
+    color: var(--gris-oscuro) !important;
+    font-weight: 500;
+}
+
+    .nav-link:hover {
+        color: var(--rosa-fuerte) !important;
+    }
+
+/* --- BOTONES --- */
+.btn-primary {
+    background-color: var(--rosa-fuerte);
+    border-color: var(--rosa-fuerte);
+}
+
+    .btn-primary:hover {
+        background-color: var(--dorado);
+        border-color: var(--dorado);
+        color: var(--gris-oscuro);
+    }
+
+.btn-outline-primary {
+    color: var(--rosa-fuerte);
+    border-color: var(--rosa-fuerte);
+}
+
+    .btn-outline-primary:hover {
+        background-color: var(--rosa-fuerte);
+        color: var(--blanco);
+    }
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+
+/* --- HERO BANNER --- */
+.hero-banner {
+    position: relative;
+    height: 90vh;
+    overflow: hidden;
+}
+
+    .hero-banner .banner-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(45%);
+    }
+
+    .hero-banner .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-banner .banner-content {
+        z-index: 2;
+        color: var(--blanco);
+        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-banner h1 span {
+        color: var(--rosa-fuerte);
+    }
+
+    .hero-banner a {
+        border-radius: 50px;
+        background-color: var(--dorado);
+        border: none;
+        color: var(--gris-oscuro);
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+        .hero-banner a:hover {
+            background-color: var(--rosa-fuerte);
+            color: var(--blanco);
+        }
+
+/* --- FOOTER --- */
+footer {
+    background-color: var(--gris-oscuro);
+    color: var(--blanco);
+}
+
+    footer a {
+        color: var(--dorado);
+        text-decoration: none;
+    }
+
+        footer a:hover {
+            color: var(--rosa-fuerte);
+        }
+
+/* --- TARJETAS DEL CATÁLOGO --- */
+.card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--blanco);
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+.card-title {
+    color: var(--rosa-fuerte);
+    font-weight: 600;
+}
+
+.card-body p {
+    color: var(--gris-oscuro);
+}
+
+/* --- BOTÓN WHATSAPP --- */
+.whatsapp-float img {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.table-rosa {
+    background-color: var(--rosa-fuerte);
+}
+
+.table th, .table td {
+    vertical-align: middle !important;
+}
+
+.text-rosa {
+    color: var(--rosa-fuerte) !important;
+}
+
+.border-rosa {
+    border: 2px solid var(--rosa-fuerte) !important;
+}
+
+.card-body h5 {
+    color: var(--rosa-fuerte);
+}
+
+.table thead {
+    background-color: var(--dorado);
+    color: var(--gris-oscuro);
+    font-weight: 600;
+}
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s ease;
+}
+
+    .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+.alert-danger {
+    background-color: #fce4ec;
+    border-color: var(--rosa-fuerte);
+    color: var(--gris-oscuro);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--rosa-fuerte);
+    box-shadow: 0 0 0 0.15rem rgba(226, 90, 140, 0.25);
+}
+
+.alert-light {
+    background-color: var(--blanco);
+    color: var(--gris-oscuro);
+}
+
+.card {
+    background-color: var(--blanco);
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: var(--rosa-fuerte);
+    box-shadow: 0 0 0 0.15rem rgba(226, 90, 140, 0.25);
+}
+
+.input-group .btn {
+    border-color: var(--rosa-fuerte);
+    color: var(--rosa-fuerte);
+}
+
+    .input-group .btn:hover {
+        background-color: var(--rosa-fuerte);
+        color: var(--blanco);
+    }
+
+.input-group .form-control {
+    border: 1px solid var(--rosa-fuerte);
+    color: var(--gris-oscuro);
+}
+
+
+:root {
+    --festa-rosa: #F45CA4;
+    --festa-lila: #C586E8;
+    --festa-violeta: #9A72D6;
+    --festa-blanco: #FFFFFF;
+    --festa-gris: #F8F8F8;
+    --festa-texto: #3A2A4D;
+}
+
+
+.navbar-festa {
+    background-color: var(--festa-lila);
+    color: var(--festa-blanco);
+    font-weight: 500;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+    .navbar-festa .nav-link {
+        color: var(--festa-blanco) !important;
+        transition: color 0.3s ease;
+    }
+
+        .navbar-festa .nav-link:hover,
+        .navbar-festa .nav-link.active {
+            color: var(--festa-rosa) !important;
+        }
+
+
+h1, h2, h3, h4 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--festa-texto);
+}
+
+    h2.text-rosa {
+        color: var(--festa-rosa);
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+.card-festa {
+    background-color: var(--festa-violeta);
+    color: var(--festa-blanco);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .card-festa:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .card-festa h5 {
+        font-weight: bold;
+        background-color: rgba(0,0,0,0.3);
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 6px;
+    }
+
+.btn-festa {
+    background-color: var(--festa-rosa);
+    color: var(--festa-blanco);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-festa:hover {
+        background-color: var(--festa-violeta);
+    }

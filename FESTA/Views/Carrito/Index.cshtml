@@ -1,0 +1,93 @@
+﻿@model List<FESTA.Models.ItemCarrito>
+@{
+    ViewData["Title"] = "Mi Carrito";
+}
+
+<div class="container my-5 animate-on-scroll">
+    <h2 class="text-center fw-bold text-rosa mb-4">🛒 Mi carrito FESTA</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-light border-rosa text-center shadow-sm p-4">
+            <h5 class="mb-3">Tu carrito está vacío 😅</h5>
+            <p>Explora nuestras categorías y elige tus decoraciones favoritas.</p>
+            <a href="/Catalogo/Index" class="btn btn-primary mt-3">
+                <i class="bi bi-arrow-left"></i> Volver al catálogo
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive shadow-sm rounded-4 overflow-hidden">
+            <table class="table align-middle mb-0 text-center">
+                <thead class="table-rosa text-white">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@item.Producto.Nombre</td>
+                            <td>$@item.Producto.Precio</td>
+                            <td>
+                                <form asp-action="ActualizarCantidad" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@item.Producto.Id" />
+                                    <div class="input-group input-group-sm justify-content-center">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-restar">-</button>
+                                        <input type="number" name="cantidad" value="@item.Cantidad"
+                                               min="1" class="form-control text-center cantidad-input" style="width:60px;" />
+                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-sumar">+</button>
+                                        <button type="submit" class="btn btn-outline-success btn-sm ms-2">
+                                            <i class="bi bi-arrow-repeat"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+                            <td class="fw-bold text-rosa">$@(item.Producto.Precio* item.Cantidad)</td>
+                            <td>
+                                <a asp-action="Eliminar" asp-route-id="@item.Producto.Id" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-end mt-4">
+            <h4 class="fw-bold">
+                Total: <span class="text-rosa">$@ViewBag.Total</span>
+            </h4>
+            <a href="/Reserva/Index" class="btn btn-primary px-4 py-2 mt-3 fw-semibold">
+                <i class="bi bi-calendar-check"></i> Continuar con la reserva
+            </a>
+        </div>
+    }
+    @section Scripts {
+        <script>
+            document.querySelectorAll('.btn-sumar').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const input = this.parentElement.querySelector('.cantidad-input');
+                    input.value = parseInt(input.value) + 1;
+                });
+            });
+
+            document.querySelectorAll('.btn-restar').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const input = this.parentElement.querySelector('.cantidad-input');
+                    if (parseInt(input.value) > 1) {
+                        input.value = parseInt(input.value) - 1;
+                    }
+                });
+            });
+        </script>
+    }
+
+</div>

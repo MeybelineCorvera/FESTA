@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Notificación de reserva";
+    var whatsappUrl = ViewBag.WhatsappUrl as string;
+    var reservaId = ViewBag.ReservaId;
+}
+
+<div class="container text-center my-5 animate-on-scroll">
+    <h2 class="fw-bold text-rosa mb-4">🎉 ¡Reserva enviada con éxito!</h2>
+
+    <div class="alert alert-light border-rosa shadow-sm mx-auto" style="max-width: 500px;">
+        <p class="mb-3">
+            Gracias por tu reserva. Para agilizar la confirmación, haz clic en el botón
+            siguiente para enviarnos tu información por WhatsApp 📲.
+        </p>
+
+        <a href="@whatsappUrl" target="_blank" class="btn btn-success btn-lg fw-bold px-4">
+            <i class="bi bi-whatsapp"></i> Enviar confirmación por WhatsApp
+        </a>
+    </div>
+
+    <p class="mt-4 text-muted">Después de enviar tu mensaje, podrás realizar tu pago:</p>
+
+    <a href="/Pago/Index?reservaId=@reservaId" class="btn btn-primary px-4 py-2 mt-2 fw-semibold">
+        💳 Proceder al pago
+    </a>
+</div>

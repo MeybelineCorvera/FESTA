@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FESTA</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    @RenderSection("Styles", required: false)
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-festa shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" alt="FESTA" height="80" class="me-2" />
+            
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav" aria-controls="navbarNav"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Catalogo" asp-action="Index">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Reserva" asp-action="Index">Reservas</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Carrito" asp-action="Index">
+                                <i class="bi bi-cart4"></i> Carrito
+                            </a>
+                        </li>
+
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="QuienesSomos">¿Quiénes somos?</a></li>
+                        @{
+                            var adminSesion = Context.Session.GetString("Admin");
+                        }
+
+                        @if (string.IsNullOrEmpty(adminSesion))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-muted" asp-controller="Admin" asp-action="Login">
+                                    <i class="bi bi-person-lock"></i> Admin
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="bi bi-person-check"></i> Admin
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Panel">Panel de control</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Reservas">Reservas</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Categoria" asp-action="Index">Categorías</a></li>
+                                    <li><a class="dropdown-item text-danger" asp-controller="Admin" asp-action="Logout">Cerrar sesión</a></li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container mt-4">
+        @RenderBody()
+    </main>
+
+    <footer class="bg-dark text-light text-center py-4 mt-5">
+        <div class="mb-2">
+            <a href="https://www.instagram.com/festasupplies.sv" target="_blank" class="text-light mx-2">
+                <i class="bi bi-instagram"></i> Instagram
+            </a>
+            |
+            <a href="https://www.facebook.com/festasupplies" target="_blank" class="text-light mx-2">
+                <i class="bi bi-facebook"></i> Facebook
+            </a>
+        </div>
+        <p>© 2025 FESTA - Party • Gifts • Supplies</p>
+    </footer>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+    <a href="https://wa.me/50379888479?text=¡Hola%20FESTA!%20👋%20Me%20gustaría%20obtener%20más%20información%20sobre%20decoraciones%20y%20servicios%20para%20mi%20evento%20🎉."
+       class="whatsapp-float"
+       target="_blank"
+       aria-label="Chat en WhatsApp">
+        <img src="~/images/whatsapp-icon.png" alt="WhatsApp FESTA" />
+    </a>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

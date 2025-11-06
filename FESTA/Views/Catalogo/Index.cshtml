@@ -1,0 +1,70 @@
+﻿@model List<FESTA.Models.Categoria>
+@{
+    ViewData["Title"] = "Catálogo FESTA";
+}
+
+<div class="container my-5">
+    <h2 class="fw-bold display-4 mb-3 animate__animated animate__fadeInDown text-rosa"> Catálogo FESTA</h2>
+    <br />
+    <div class="row g-4">
+        @foreach (var categoria in Model)
+        {
+            <div class="col-md-6 col-lg-4 animate-on-scroll">
+                <a asp-action="VerCategoria" asp-route-id="@categoria.Id"
+                   class="text-decoration-none text-dark">
+                    <div class="card card-festa hover-zoom h-100">
+                        <img src="@categoria.ImagenUrl" alt="@categoria.Nombre" class="card-img-top"
+                             style="height:350px; object-fit:cover; filter:brightness(70%)" />
+                        <div class="card-img-overlay d-flex align-items-end p-3">
+                            <h4 class="fw-bold text-white bg-dark bg-opacity-50 px-3 py-2 rounded-3">
+                                @categoria.Nombre
+                            </h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .text-rosa {
+            color: var(--festa-rosa) !important;
+        }
+
+        .hover-zoom img {
+            transition: transform 0.4s ease;
+        }
+
+        .hover-zoom:hover img {
+            transform: scale(1.05);
+            filter: brightness(80%);
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-in-out;
+        }
+
+            .animate-on-scroll.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        const elementos = document.querySelectorAll('.animate-on-scroll');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        });
+        elementos.forEach(el => observer.observe(el));
+    </script>
+}

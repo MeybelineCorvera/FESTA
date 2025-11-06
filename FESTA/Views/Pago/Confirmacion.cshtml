@@ -1,0 +1,31 @@
+﻿@model FESTA.Models.Pago
+@{
+    ViewData["Title"] = "Confirmación de pago";
+}
+
+<div class="text-center mt-5">
+    <h2>💳 Pago registrado con éxito</h2>
+    <p>Gracias por confiar en <strong>FESTA</strong>.En breve recibirás un mensaje de confirmación por WhatsApp.</p>
+
+    <div class="card mx-auto mt-4 shadow-sm" style="max-width:500px;">
+        <div class="card-body">
+            <h5>Resumen del pedido</h5>
+            <hr />
+            <p><strong>Cliente:</strong> @Model.Reserva.NombreCliente</p>
+            <p><strong>Tipo de servicio:</strong> @Model.Reserva.TipoServicio</p>
+            <p><strong>Total reserva:</strong> $@Model.Reserva.Total</p>
+            <p><strong>Porcentaje pagado:</strong> @Model.PorcentajePago %</p>
+            <p><strong>Monto pagado:</strong> $@Model.MontoPagado</p>
+            @if (!string.IsNullOrEmpty(Model.ComprobanteUrl))
+            {
+                <p>
+                    <a href="@Model.ComprobanteUrl" target="_blank" class="btn btn-outline-primary btn-sm">
+                        Ver comprobante
+                    </a>
+                </p>
+            }
+        </div>
+    </div>
+
+    <a href="/Home/Index" class="btn btn-primary mt-4">Volver al inicio</a>
+</div>

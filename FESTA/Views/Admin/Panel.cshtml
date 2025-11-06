@@ -1,0 +1,103 @@
+﻿@model IEnumerable<FESTA.Models.Producto>
+@{
+    ViewData["Title"] = "Panel de Administración";
+}
+
+<h2 class="text-center my-4 text-primary fw-bold">Panel de Control - FESTA</h2>
+
+<div class="row text-center mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title text-secondary">Productos</h5>
+                <h2 class="fw-bold text-primary">@ViewBag.TotalProductos</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title text-secondary">Reservas</h5>
+                <h2 class="fw-bold text-success">@ViewBag.TotalReservas</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title text-secondary">Pagos</h5>
+                <h2 class="fw-bold text-danger">@ViewBag.TotalPagos</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-light border text-center shadow-sm">
+    <strong>Administrador actual:</strong> @ViewBag.AdminActual
+</div>
+
+<hr class="my-4" />
+
+<h4 class="text-secondary mb-3 text-center">Actividad de Reservas y Pagos (últimos 6 meses)</h4>
+<canvas id="grafico" height="120"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('grafico');
+    const data = {
+        labels: @Html.Raw(Json.Serialize(ViewBag.Meses)),
+        datasets: [
+            {
+                label: 'Reservas',
+                data: @Html.Raw(Json.Serialize(ViewBag.ReservasPorMes)),
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                tension: 0.3,
+                fill: true
+            },
+            {
+                label: 'Pagos',
+                data: @Html.Raw(Json.Serialize(ViewBag.PagosPorMes)),
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                tension: 0.3,
+                fill: true
+            }
+        ]
+    };
+
+    new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+</script>
+
+<table class="table table-hover align-middle mt-4 shadow-sm">
+    <thead class="table-light">
+        <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Categoria?.Nombre</td>
+                <td>$@item.Precio</td>
+                <td class="text-end">
+                    <a asp-controller="Catalogo" asp-action="Editar" asp-route-id="@item.Id" class="btn btn-sm btn-warning me-2">Editar</a>
+                    <a asp-controller="Catalogo" asp-action="Eliminar" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-end">
+    <a asp-controller="Catalogo" asp-action="Crear" class="btn btn-success">Agregar nuevo producto</a>
+</div>

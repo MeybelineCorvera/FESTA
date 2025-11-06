@@ -1,0 +1,37 @@
+﻿@model FESTA.Models.Categoria
+@{
+    ViewData["Title"] = "Editar categoría";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-rosa mb-4">📁 Nueva categoría</h2>
+
+    <form asp-action="@(ViewData["Title"].ToString().Contains("Editar") ? "Editar" : "Crear")" method="post">
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Nombre</label>
+            <input asp-for="Nombre" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Descripción</label>
+            <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">URL de la imagen (banner)</label>
+            <input asp-for="ImagenUrl" class="form-control" placeholder="/images/banner_globos.jpg" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Categoría Padre (opcional)</label>
+            <select asp-for="CategoriaPadreId" asp-items="@(new SelectList(ViewBag.CategoriasPadre, "Id", "Nombre"))" class="form-select">
+                <option value="">— Ninguna —</option>
+            </select>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary px-4">Guardar</button>
+            <a asp-action="Index" class="btn btn-secondary px-4 ms-2">Cancelar</a>
+        </div>
+    </form>
+</div>

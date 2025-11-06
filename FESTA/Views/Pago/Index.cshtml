@@ -1,0 +1,59 @@
+﻿@model FESTA.Models.Pago
+@{
+    ViewData["Title"] = "Pago";
+    var reserva = ViewBag.Reserva as FESTA.Models.Reserva;
+}
+
+<div class="container my-5 animate-on-scroll">
+    <h2 class="text-center fw-bold text-rosa mb-4">💳 Pago de reserva</h2>
+
+    <div class="card mx-auto shadow-lg border-rosa rounded-4" style="max-width: 600px;">
+        <div class="card-body p-4">
+            <div class="mb-4 text-center">
+                <h5 class="fw-semibold text-secondary mb-1">Cliente:</h5>
+                <p class="fw-bold fs-5">@reserva.NombreCliente</p>
+                <h5 class="fw-semibold text-secondary mb-1">Total de la reserva:</h5>
+                <p class="fw-bold text-rosa fs-5">$@reserva.Total</p>
+            </div>
+
+            <form asp-action="Index" method="post" enctype="multipart/form-data" class="animate-on-scroll">
+                <input type="hidden" asp-for="ReservaId" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Seleccione porcentaje de pago</label>
+                    <select asp-for="PorcentajePago" class="form-select border-rosa" required>
+                        <option value="">-- Seleccione --</option>
+                        <option value="50">💰 50% (anticipo)</option>
+                        <option value="100">💎 100% (pago completo)</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Método de pago</label>
+                    <select asp-for="MetodoPago" class="form-select border-rosa" required>
+                        <option value="">-- Seleccione --</option>
+                        <option value="Transferencia bancaria">🏦 Transferencia bancaria</option>
+                    </select>
+                </div>
+
+                <div class="alert alert-light border-rosa shadow-sm">
+                    <h5 class="fw-bold text-rosa mb-2"><i class="bi bi-bank"></i> Datos bancarios</h5>
+                    <p><strong>Banco:</strong> Banco Agrícola</p>
+                    <p><strong>Número de cuenta:</strong> 123456789</p>
+                    <p><strong>Nombre:</strong> FESTA Decoraciones SV</p>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Subir comprobante (opcional)</label>
+                    <input type="file" name="Comprobante" class="form-control border-rosa" accept=".jpg,.jpeg,.png,.pdf" />
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-5 fw-bold">
+                        <i class="bi bi-check-circle"></i> Confirmar pago
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
