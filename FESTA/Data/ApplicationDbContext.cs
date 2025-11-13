@@ -17,6 +17,8 @@ namespace FESTA.Data
         public DbSet<Pago> Pagos { get; set; }
         public DbSet<Admin> Administradores { get; set; }
         public DbSet<DetalleReserva> DetallesReserva { get; set; }
+        public DbSet<ImagenProducto> ImagenesProducto { get; set; }
+
 
     }
 }

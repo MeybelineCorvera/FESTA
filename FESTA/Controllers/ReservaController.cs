@@ -40,15 +40,15 @@ namespace FESTA.Controllers
             // Validar anticipación
             var diasAnticipacion = (reserva.FechaEvento - DateTime.Now.Date).TotalDays;
 
-            if (reserva.TipoServicio == "Mobiliario" && diasAnticipacion < 7)
+            if (reserva.TipoServicio == "Mobiliario" && diasAnticipacion < 3)
             {
-                ModelState.AddModelError("", "Las reservas de mobiliario deben hacerse con al menos 7 días de anticipación.");
+                ModelState.AddModelError("", "Las reservas de mobiliario deben hacerse con al menos 3 días de anticipación.");
                 return View(reserva);
             }
 
-            if (reserva.TipoServicio == "Decoración" && diasAnticipacion < 1)
+            if (reserva.TipoServicio == "Decoración" && diasAnticipacion < 5)
             {
-                ModelState.AddModelError("", "Las reservas de decoración deben hacerse con al menos 1 día de anticipación.");
+                ModelState.AddModelError("", "Las reservas de decoración deben hacerse con al menos 5 día de anticipación.");
                 return View(reserva);
             }
 
@@ -75,13 +75,14 @@ namespace FESTA.Controllers
             _context.SaveChanges();
             // Limpiar carrito
             HttpContext.Session.Remove(SessionKey);
+            var horaFormateada = DateTime.Today.Add(reserva.HoraEvento).ToString("hh:mm tt");
 
             // 🔹 Crear mensaje de notificación para WhatsApp
             string mensaje = Uri.EscapeDataString(
                 $" Nueva reserva recibida en FESTA " +
                 $"*Cliente:* {reserva.NombreCliente}" +
                 $" *Fecha del evento:* {reserva.FechaEvento:dd/MM/yyyy}" +
-                $" *Hora:* {reserva.HoraEvento}%" +
+                $" *Hora:* {horaFormateada}%" +
                 $" *Dirección:* {reserva.Direccion}" +
                 $" *WhatsApp cliente:* {reserva.WhatsApp}" +
                 $"*Total estimado:* ${reserva.Total}" +

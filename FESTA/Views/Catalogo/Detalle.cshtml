@@ -1,0 +1,185 @@
+﻿@model FESTA.Models.Producto
+@{
+    ViewData["Title"] = Model.Nombre;
+}
+
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <!-- GALERÍA DE IMÁGENES -->
+        <div class="col-md-6 mb-4">
+            @if (Model.Imagenes != null && Model.Imagenes.Any())
+            {
+                <div class="galeria-scroll d-flex overflow-auto gap-2">
+                    @foreach (var imagen in Model.Imagenes)
+                    {
+                        <img src="@imagen.Url"
+                             class="galeria-img"
+                             data-bs-toggle="modal"
+                             data-bs-target="#imagenModal"
+                             alt="@Model.Nombre" />
+                    }
+                </div>
+            }
+            else
+            {
+                <img src="/images/no-image.png" class="galeria-img" />
+            }
+
+        </div>
+
+        <!-- INFORMACIÓN DEL PRODUCTO -->
+        <div class="col-md-6">
+            <h2 class="fw-bold text-dark">@Model.Nombre</h2>
+            <p class="text-muted">@Model.Descripcion</p>
+            <h4 class="text-danger fw-bold">$@Model.Precio.ToString("0.00")</h4>
+
+            <form asp-controller="Carrito" asp-action="Agregar" method="post" class="d-inline">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-pink mt-3">
+                    <i class="bi bi-cart"></i> Agregar al carrito
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CON NAVEGACIÓN -->
+<div class="modal fade" id="imagenModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0 shadow-none text-center">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+
+            <button id="prevBtn" class="btn-nav btn-left" type="button">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <img id="imagenAmpliada" src="" class="w-100 rounded-3" style="object-fit: contain; background-color: #000;" />
+            <button id="nextBtn" class="btn-nav btn-right" type="button">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const imagenes = Array.from(document.querySelectorAll('.galeria-img'));
+        const imagenModal = document.getElementById('imagenAmpliada');
+        const modal = document.getElementById('imagenModal');
+        let indexActual = 0;
+
+        imagenes.forEach((img, index) => {
+            img.addEventListener('click', () => {
+                indexActual = index;
+                mostrarImagen();
+            });
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            indexActual = (indexActual + 1) % imagenes.length;
+            mostrarImagen();
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            indexActual = (indexActual - 1 + imagenes.length) % imagenes.length;
+            mostrarImagen();
+        });
+
+        // Soporte táctil (swipe)
+        let touchStartX = 0;
+        imagenModal.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        imagenModal.addEventListener('touchend', e => {
+            let diff = e.changedTouches[0].screenX - touchStartX;
+            if (diff > 50) {
+                indexActual = (indexActual - 1 + imagenes.length) % imagenes.length;
+            } else if (diff < -50) {
+                indexActual = (indexActual + 1) % imagenes.length;
+            }
+            mostrarImagen();
+        });
+
+                 let modalBootstrap = null;
+
+        function mostrarImagen() {
+            imagenModal.src = imagenes[indexActual].src;
+
+            // Si el modal aún no está inicializado, lo creamos una vez
+            if (!modalBootstrap) {
+                modalBootstrap = new bootstrap.Modal(document.getElementById('imagenModal'));
+            }
+
+            modalBootstrap.show();
+        }
+                document.getElementById('imagenModal').addEventListener('hidden.bs.modal', () => {
+            document.body.classList.remove('modal-open');
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        });
+
+    </script>
+}
+
+<style>
+    /* Galería horizontal tipo Instagram */
+    .galeria-scroll {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 10px;
+    }
+
+    .galeria-img {
+        flex: 0 0 auto;
+        max-height: 400px;
+        object-fit: contain; /* se ven completas */
+        border-radius: 15px;
+        scroll-snap-align: center;
+        transition: transform 0.3s ease;
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+
+        .galeria-img:hover {
+            transform: scale(1.02);
+        }
+
+    /* Botones de navegación modal */
+    .btn-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.4);
+        color: white;
+        border: none;
+        font-size: 2rem;
+        padding: 10px 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 5;
+    }
+
+    .btn-left {
+        left: 15px;
+    }
+
+    .btn-right {
+        right: 15px;
+    }
+
+    .btn-nav:hover {
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .btn-pink {
+        background-color: #e75480;
+        color: #fff;
+        border-radius: 10px;
+        transition: background-color 0.3s;
+    }
+
+        .btn-pink:hover {
+            background-color: #d23b6c;
+            color: #fff;
+        }
+</style>

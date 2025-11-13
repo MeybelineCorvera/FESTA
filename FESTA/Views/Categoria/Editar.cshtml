@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <h2 class="text-center text-rosa mb-4">📁 Nueva categoría</h2>
 
-    <form asp-action="@(ViewData["Title"].ToString().Contains("Editar") ? "Editar" : "Crear")" method="post">
+    <form asp-action="@(ViewData["Title"].ToString().Contains("Editar") ? "Editar" : "Crear")" enctype="multipart/form-data" method="post">
         <div class="mb-3">
             <label class="form-label fw-semibold">Nombre</label>
             <input asp-for="Nombre" class="form-control" required />
@@ -17,9 +17,9 @@
             <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label fw-semibold">URL de la imagen (banner)</label>
-            <input asp-for="ImagenUrl" class="form-control" placeholder="/images/banner_globos.jpg" />
+        <div class="form-group mb-3">
+            <label>Imágenen Categoria</label>
+            <input type="file" name="ImagenArchivo" multiple class="form-control" />
         </div>
 
         <div class="mb-3">

@@ -12,10 +12,19 @@
             Gracias por tu reserva. Para agilizar la confirmación, haz clic en el botón
             siguiente para enviarnos tu información por WhatsApp 📲.
         </p>
-
-        <a href="@whatsappUrl" target="_blank" class="btn btn-success btn-lg fw-bold px-4">
+        <!-- 🔹 Mensaje especial si el servicio es decoración -->
+        <div class="alert alert-info mt-3 text-start" role="alert">
+            <i class="bi bi-info-circle-fill text-primary"></i>
+            <strong>Si tu reserva es de decoración:</strong> al momento de enviarnos el mensaje por WhatsApp,
+            puedes indicarnos cómo deseas personalizar tu decoración 🎈.<br />
+            Ejemplo: color de globos, temática, color de shimmer u otros detalles.
+        </div>
+        <a href="@whatsappUrl" target="_blank"
+           onclick="setTimeout(() => window.location.href='/Pago/Index?reservaId=@reservaId', 8000);"
+           class="btn btn-success btn-lg fw-bold px-4">
             <i class="bi bi-whatsapp"></i> Enviar confirmación por WhatsApp
         </a>
+
     </div>
 
     <p class="mt-4 text-muted">Después de enviar tu mensaje, podrás realizar tu pago:</p>

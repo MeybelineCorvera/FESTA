@@ -102,6 +102,28 @@ namespace FESTA.Migrations
                     b.ToTable("DetallesReserva");
                 });
 
+            modelBuilder.Entity("FESTA.Models.ImagenProducto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("ImagenesProducto");
+                });
+
             modelBuilder.Entity("FESTA.Models.Pago", b =>
                 {
                     b.Property<int>("Id")
@@ -245,10 +267,21 @@ namespace FESTA.Migrations
                     b.Navigation("Reserva");
                 });
 
+            modelBuilder.Entity("FESTA.Models.ImagenProducto", b =>
+                {
+                    b.HasOne("FESTA.Models.Producto", "Producto")
+                        .WithMany("Imagenes")
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Producto");
+                });
+
             modelBuilder.Entity("FESTA.Models.Pago", b =>
                 {
                     b.HasOne("FESTA.Models.Reserva", "Reserva")
-                        .WithMany()
+                        .WithMany("Pagos")
                         .HasForeignKey("ReservaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -274,9 +307,16 @@ namespace FESTA.Migrations
                     b.Navigation("Subcategorias");
                 });
 
+            modelBuilder.Entity("FESTA.Models.Producto", b =>
+                {
+                    b.Navigation("Imagenes");
+                });
+
             modelBuilder.Entity("FESTA.Models.Reserva", b =>
                 {
                     b.Navigation("Detalles");
+
+                    b.Navigation("Pagos");
                 });
 #pragma warning restore 612, 618
         }

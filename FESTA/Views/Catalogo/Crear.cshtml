@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <h2 class="text-center text-primary mb-4">➕ Agregar nuevo producto</h2>
 
-    <form asp-action="Crear" method="post">
+    <form asp-action="Crear" enctype="multipart/form-data" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="mb-3">
@@ -24,9 +24,11 @@
             <input asp-for="Precio" type="number" step="0.01" class="form-control" />
         </div>
 
-        <div class="mb-3">
-            <label asp-for="ImagenUrl" class="form-label fw-bold">URL de imagen</label>
-            <input asp-for="ImagenUrl" class="form-control" />
+        
+        <div class="form-group mb-3">
+            <label>Imágenes del producto</label>
+            <input type="file" name="imagenes" multiple class="form-control" />
+            <small class="text-muted">Puedes seleccionar varias imágenes</small>
         </div>
 
         <div class="mb-3">
@@ -39,8 +41,29 @@
             <a asp-action="Index" class="btn btn-secondary px-4 ms-2">Cancelar</a>
         </div>
     </form>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+
+        <script>
+            const input = document.querySelector('input[name="imagenes"]');
+            const preview = document.getElementById('preview');
+            input.addEventListener('change', () => {
+                preview.innerHTML = "";
+                [...input.files].forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.classList.add('m-2');
+                        img.style.height = "100px";
+                        img.style.borderRadius = "10px";
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+        </script>
+    }
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+

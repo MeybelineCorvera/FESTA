@@ -28,7 +28,9 @@ namespace FESTA.Controllers
 
         public async Task<IActionResult> Detalle(int id)
         {
-            var producto = await _context.Productos.Include(p => p.Categoria)
+            var producto = await _context.Productos
+                .Include(p => p.Categoria)
+                .Include(p => p.Imagenes) // 👈 importante
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (producto == null)
@@ -36,6 +38,7 @@ namespace FESTA.Controllers
 
             return View(producto);
         }
+
 
         // CRUD básico para administración
         public IActionResult Crear()
@@ -50,7 +53,7 @@ namespace FESTA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear(Producto producto)
+        public async Task<IActionResult> Crear(Producto producto, List<IFormFile> imagenes)
         {
             if (HttpContext.Session.GetString("Admin") == null)
                 return RedirectToAction("Login", "Admin");
@@ -63,8 +66,37 @@ namespace FESTA.Controllers
 
             _context.Productos.Add(producto);
             await _context.SaveChangesAsync();
+
+            // ✅ Guardar imágenes en wwwroot/images/productos
+            string carpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/productos");
+            if (!Directory.Exists(carpeta))
+                Directory.CreateDirectory(carpeta);
+
+            foreach (var img in imagenes)
+            {
+                if (img.Length > 0)
+                {
+                    var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
+                    var ruta = Path.Combine(carpeta, nombreArchivo);
+                    using (var stream = new FileStream(ruta, FileMode.Create))
+                    {
+                        await img.CopyToAsync(stream);
+                    }
+
+                    var imagenProducto = new ImagenProducto
+                    {
+                        Url = "/images/productos/" + nombreArchivo,
+                        ProductoId = producto.Id
+                    };
+
+                    _context.ImagenesProducto.Add(imagenProducto);
+                }
+            }
+
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         public async Task<IActionResult> Editar(int id)
         {
@@ -126,7 +158,9 @@ namespace FESTA.Controllers
             var categoria = await _context.Categorias
                 .Include(c => c.Subcategorias)
                     .ThenInclude(s => s.Productos)
+                        .ThenInclude(p => p.Imagenes) // 👈 importante
                 .Include(c => c.Productos)
+                    .ThenInclude(p => p.Imagenes)   // 👈 importante
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (categoria == null)

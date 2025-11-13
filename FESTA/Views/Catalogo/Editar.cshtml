@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <h2 class="text-center text-primary mb-4">✏️ Editar producto</h2>
 
-    <form asp-action="Editar" method="post">
+    <form asp-action="Editar" enctype="multipart/form-data" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <input type="hidden" asp-for="Id" />
@@ -29,10 +29,10 @@
             <span asp-validation-for="Precio" class="text-danger"></span>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="ImagenUrl" class="form-label fw-bold">URL de imagen</label>
-            <input asp-for="ImagenUrl" class="form-control" />
-            <span asp-validation-for="ImagenUrl" class="text-danger"></span>
+        <div class="form-group mb-3">
+            <label>Imágenes del producto</label>
+            <input type="file" name="imagenes" multiple class="form-control" />
+            <small class="text-muted">Puedes seleccionar varias imágenes</small>
         </div>
 
         <div class="mb-3">

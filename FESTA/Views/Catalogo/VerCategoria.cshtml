@@ -8,9 +8,11 @@
         <!-- Banner principal a la izquierda -->
         <div class="col-lg-5 col-md-12 mb-4">
             <div class="position-relative rounded-4 overflow-hidden shadow">
-                <img src="@Model.ImagenUrl" alt="@Model.Nombre"
+                <img src="@(!string.IsNullOrEmpty(Model.ImagenUrl) ? Model.ImagenUrl : "/images/no-image.png")"
+                     alt="@Model.Nombre"
                      class="img-fluid w-100"
-                     style="height:400px; object-fit:cover; filter:brightness(70%)" />
+                     style="height:400px; object-fit:cover;" />
+
                 <div class="position-absolute bottom-0 start-0 w-100 text-white p-3"
                      style="background:rgba(0,0,0,0.5)">
                     <h2 class="fw-bold">@Model.Nombre</h2>
@@ -30,8 +32,10 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="card shadow-sm border-0 rounded-4 h-100 hover-zoom">
                                 <a asp-action="VerCategoria" asp-route-id="@sub.Id" class="text-decoration-none text-dark">
-                                    <img src="@sub.ImagenUrl" class="card-img-top rounded-top-4"
+                                    <img src="@(!string.IsNullOrEmpty(sub.ImagenUrl) ? sub.ImagenUrl : "/images/no-image.png")"
+                                         class="card-img-top rounded-top-4"
                                          style="height:180px; object-fit:cover;" alt="@sub.Nombre" />
+
                                     <div class="card-body text-center">
                                         <h6 class="fw-bold">@sub.Nombre</h6>
                                     </div>
@@ -47,24 +51,32 @@
                 <div class="row g-4">
                     @foreach (var producto in Model.Productos)
                     {
+                        var primeraImagen = producto.Imagenes?.FirstOrDefault()?.Url ?? producto.ImagenUrl ?? "/images/no-image.png";
+
                         <div class="col-sm-6 col-md-6">
                             <div class="card shadow-sm border-0 rounded-4 h-100 hover-zoom">
-                                <img src="@producto.ImagenUrl" class="card-img-top rounded-top-4"
-                                     style="height:180px; object-fit:cover;" alt="@producto.Nombre" />
-                                <div class="card-body text-center">
-                                    <h6 class="fw-bold">@producto.Nombre</h6>
-                                    <p class="text-muted mb-1">$@producto.Precio</p>
+                                <!-- 👇 Ahora la tarjeta es clickeable y abre el detalle -->
+                                <a asp-action="Detalle" asp-route-id="@producto.Id" class="text-decoration-none text-dark">
+                                    <img src="@primeraImagen" class="card-img-top rounded-top-4"
+                                         style="height:180px; object-fit:cover;" alt="@producto.Nombre" />
+                                    <div class="card-body text-center">
+                                        <h6 class="fw-bold">@producto.Nombre</h6>
+                                        <p class="text-muted mb-1">$@producto.Precio</p>
+                                    </div>
+                                </a>
+                                <!-- Botón de agregar al carrito debajo -->
+                                <div class="text-center pb-3">
                                     <form asp-controller="Carrito" asp-action="Agregar" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="@producto.Id" />
                                         <button type="submit" class="btn btn-sm btn-primary">
                                             <i class="bi bi-cart-plus"></i> Agregar
                                         </button>
                                     </form>
-
                                 </div>
                             </div>
                         </div>
                     }
+
                 </div>
             }
             else

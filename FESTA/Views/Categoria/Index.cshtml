@@ -46,7 +46,11 @@
                             <ul>
                                 @foreach (var sub in categoria.Subcategorias)
                                 {
-                                    <li>@sub.Nombre</li>
+                                    <li>
+                                        @sub.Nombre
+                                        <a asp-action="Editar" asp-route-id="@sub.Id" class="btn btn-sm btn-outline-warning ms-2">Editar</a>
+                                        <a asp-action="Eliminar" asp-route-id="@sub.Id" class="btn btn-sm btn-outline-danger ms-1">Eliminar</a>
+                                    </li>
                                 }
                             </ul>
                         }
@@ -54,6 +58,15 @@
                         {
                             <span class="text-muted">—</span>
                         }
+
+                        <!-- 🟢 Botón para agregar subcategoría -->
+                        <button type="button" class="btn btn-sm btn-primary mt-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalSubcategoria"
+                                data-categoria-id="@categoria.Id"
+                                data-categoria-nombre="@categoria.Nombre">
+                            ➕ Agregar subcategoría
+                        </button>
                     </td>
                     <td class="text-end">
                         <a asp-action="Editar" asp-route-id="@categoria.Id" class="btn btn-sm btn-warning me-2">Editar</a>
@@ -63,4 +76,62 @@
             }
         </tbody>
     </table>
+    <!-- 🟣 Modal para crear subcategoría -->
+    <div class="modal fade" id="modalSubcategoria" tabindex="-1" aria-labelledby="modalSubcategoriaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-3 shadow">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalSubcategoriaLabel">➕ Nueva Subcategoría</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form asp-action="CrearSubcategoria" enctype="multipart/form-data" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" name="categoriaPadreId" id="categoriaPadreId" />
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Categoría padre:</label>
+                            <input type="text" id="categoriaPadreNombre" class="form-control" readonly />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nombre de la subcategoría</label>
+                            <input type="text" name="nombre" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Descripción</label>
+                            <textarea name="descripcion" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Imagen (opcional)</label>
+                            <input type="file" name="imagenArchivo" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            // 📌 Al abrir el modal, llena los datos de la categoría padre
+            const modal = document.getElementById('modalSubcategoria');
+            modal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const categoriaId = button.getAttribute('data-categoria-id');
+                const categoriaNombre = button.getAttribute('data-categoria-nombre');
+
+                document.getElementById('categoriaPadreId').value = categoriaId;
+                document.getElementById('categoriaPadreNombre').value = categoriaNombre;
+            });
+        </script>
+    }
+
 </div>

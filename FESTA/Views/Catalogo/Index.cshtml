@@ -10,10 +10,11 @@
         @foreach (var categoria in Model)
         {
             <div class="col-md-6 col-lg-4 animate-on-scroll">
-                <a asp-action="VerCategoria" asp-route-id="@categoria.Id"
-                   class="text-decoration-none text-dark">
-                    <div class="card card-festa hover-zoom h-100">
-                        <img src="@categoria.ImagenUrl" alt="@categoria.Nombre" class="card-img-top"
+                <a asp-action="VerCategoria" asp-route-id="@categoria.Id" class="text-decoration-none text-dark">
+                    <div class="card card-festa hover-zoom h-100 shadow">
+                        <img src="@(!string.IsNullOrEmpty(categoria.ImagenUrl) ? categoria.ImagenUrl : "/images/no-image.jpg")"
+                             alt="@categoria.Nombre"
+                             class="card-img-top"
                              style="height:350px; object-fit:cover; filter:brightness(70%)" />
                         <div class="card-img-overlay d-flex align-items-end p-3">
                             <h4 class="fw-bold text-white bg-dark bg-opacity-50 px-3 py-2 rounded-3">
@@ -28,7 +29,7 @@
 </div>
 
 @section Styles {
-    <style>
+    <style> 
         .text-rosa {
             color: var(--festa-rosa) !important;
         }

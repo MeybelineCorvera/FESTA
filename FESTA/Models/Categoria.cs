@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FESTA.Models
 {
@@ -18,9 +19,10 @@ namespace FESTA.Models
         public int? CategoriaPadreId { get; set; }
         public Categoria? CategoriaPadre { get; set; }
 
-        public List<Categoria> Subcategorias { get; set; } = new();
-
         // Relación: una categoría tiene varios productos
         public ICollection<Producto>? Productos { get; set; }
+        [NotMapped] 
+        public IFormFile? ImagenArchivo { get; set; }
+        public ICollection<Categoria>? Subcategorias { get; set; }
     }
 }

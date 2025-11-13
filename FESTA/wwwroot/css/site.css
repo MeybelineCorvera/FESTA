@@ -415,3 +415,8 @@ h1, h2, h3, h4 {
     .btn-festa:hover {
         background-color: var(--festa-violeta);
     }
+
+@media (max-width: 768px) {
+    .galeria-img {
+        max-height: 300px;
+    }

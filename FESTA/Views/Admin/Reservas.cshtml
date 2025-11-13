@@ -65,7 +65,7 @@
                                 @foreach (var d in r.Detalles)
                                 {
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>@d.Producto.Nombre (x@d.Cantidad)</span>
+                                        <span>@d.Producto.Nombre x @d.Cantidad</span>
                                         <strong>$@d.Subtotal</strong>
                                     </li>
                                 }
@@ -87,6 +87,7 @@
                             <p><strong>Monto pagado:</strong> $@pago.MontoPagado</p>
                             <p><strong>Método:</strong> @pago.MetodoPago</p>
                             <p><strong>Fecha:</strong> @pago.FechaPago.ToString("dd/MM/yyyy")</p>
+                            <p><strong>Hora del evento:</strong> @DateTime.Today.Add(r.HoraEvento).ToString("hh:mm tt")</p>
 
                             @if (!string.IsNullOrEmpty(pago.ComprobanteUrl))
                             {
