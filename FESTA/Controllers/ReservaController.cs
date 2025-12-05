@@ -90,7 +90,7 @@ namespace FESTA.Controllers
             );
 
             // 🔹 Número oficial de FESTA (WhatsApp)
-            string whatsappUrl = $"https://wa.me/50379888479?text={mensaje}";
+            string whatsappUrl = $"https://wa.me/50369827109?text={mensaje}";
 
             // Guardar ID para el pago
             TempData["ReservaId"] = reserva.Id;
